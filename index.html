@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Advanced Marker Simple HTML</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises
+      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIpXI56y1eCxDN5QzKrlxs8DZKKc_a8LM&callback=initMap&libraries=marker&v=beta"
+      defer
+    ></script>
+  </body>
+</html>
+
+<style>
+    /* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+#map {
+  height: 100%;
+}
+
+/* 
+ * Optional: Makes the sample page fill the window. 
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* HTML marker styles */
+.price-tag {
+  background-color: #4285F4;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 10px 15px;
+  position: relative;
+}
+
+.price-tag2 {
+  background-color: red;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 10px 15px;
+  position: relative;
+}
+
+.price-tag::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #4285F4;
+}
+
+.price-tag2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid red;
+}
+
+[class$=api-load-alpha-banner] {
+  display: none;
+}
+</style>
+
+<script type="text/javascript">
+    let map;
+let num = "open";
+let num2 = "close";
+let priceTag;
+let priceTag2;
+const NEW_ZEALAND_BOUNDS = {
+  // north: 35.63779,
+  // south: 35.62094,
+  // west: 139.86761,
+  // east: 139.89205,
+};
+const AUCKLAND = { lat: 36.69823228396284, lng: 137.8125364017519 }
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: AUCKLAND,
+    mapId: "4504f8b37365c3d0",
+    restriction: {
+      latLngBounds: NEW_ZEALAND_BOUNDS,
+      strictBounds: false,
+    },
+    zoom: 14,
+  });
+
+  priceTag = document.createElement("div");
+
+  priceTag.className = "price-tag";
+  priceTag.textContent = num;
+
+  priceTag2 = document.createElement("div");
+
+  priceTag2.className = "price-tag2";
+  priceTag2.textContent = num2;
+  
+
+  const markerView = new google.maps.marker.AdvancedMarkerView({
+    map,
+    position: { lat: 36.69756454105875, lng: 137.81598834157026 },
+    content: priceTag,
+  });
+  
+  const markerView2 = new google.maps.marker.AdvancedMarkerView({
+    map,
+    position: { lat: 36.69656570863047, lng: 137.81509687074822 },
+    content: priceTag2,
+  });
+
+}
+
+window.initMap = initMap;
+
+// map.setTilt(45);
+
+// const countDown = function(){
+//   if (num != 0){
+//     num = num -1;
+//     priceTag.textContent = num;
+//   }
+// }
+// setInterval (countDown,1000)
+</script>
